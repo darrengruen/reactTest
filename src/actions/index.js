@@ -1,3 +1,5 @@
+// Extract constants and actions into their
+// own files for better maintainability
 export const addList = (value) => ({
 	type: 'ADD_LIST',
 	value

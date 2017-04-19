@@ -12,10 +12,9 @@ export default function results (state = defaultState, action) {
 			todos: [
 				...state.todos,
 				{
-					completed: false,
+					isCompleted: false,
 					created: Date.now(),
 					id: Date.now(),
-                    isDone: false,
 					listID: action.value.listID,
 					text: action.value.text,
 					updated: Date.now()
@@ -37,6 +36,7 @@ export default function results (state = defaultState, action) {
 			]
 		};
 	case 'DELETE_TODO':
+		console.info(action);
 		index = findIndex(state.todos, (list) => list.id === action.value.id);
 
 		return {
@@ -54,8 +54,9 @@ export default function results (state = defaultState, action) {
                 ...state.todos.slice(0, index),
                 {
                     ...state.todos[index],
-                    isDone: ! state.todos[index].isDone,
-                }
+                    isCompleted: ! state.todos[index].isCompleted,
+                },
+		...state.todos.slice(index + 1)
             ]
         }
 	default:

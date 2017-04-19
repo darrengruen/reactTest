@@ -14,6 +14,7 @@ export default function results (state = defaultState, action) {
 				{
 					created: Date.now(),
 					id: Date.now(),
+					isEditing: false,
 					name: action.value,
 					updated: Date.now()
 				}

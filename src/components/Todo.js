@@ -2,46 +2,25 @@ import { addTodo, deleteTodo, toggleTodoDone } from './../actions';
 import React from 'react';
 import { connect } from 'react-redux';
 
-class Todo extends React.Component {
-	saveAttributes (event) {
-		event.preventDefault();
-		this.props.saveAttributes();
-	}
-	deleteTodo (event) {
-		event.preventDefault();
-		this.props.deleteTodo(this.props.id);
-	}
-    toggleTodoDone (event) {
-        event.preventDefault();
-        this.props.toggleTodoDone({
-            listID: this.props.listID,
-            id: this.props.id
-        });
+const todo = props => <li className="list-group-item px-sm-2 py-sm-1">
+    <button type="button" className="btn-link btn-sm float-right" onClick={ e => props.toggleTodoDone(props.listID, props.id) }>
+	{ props.isCompleted ? 'O' : 'X' }
+    </button> 
+    { 
+	props.isCompleted ? 
+	    <del>{ props.text }</del> :
+	    props.text    
     }
-	updateTodo (event) {
-		if (event.key === "Enter") {
-			event.preventDefault();
-			this.props.addTodo({
-				listID: this.props.id,
-				text: event.target.value
-			});
-		}
-	}
-	render () {
-		return (
-			<li className="list-group-item px-sm-2 py-sm-1">
-				{this.props.text} <input type="checkbox" onChange={ this.toggleTodoDone.bind(this)} value={ this.props.isDone ? "checked" : "" }></input>
-			</li>
-		);
-	}
-}
+</li>
 
-const mapStateToProps = (state) => state.todos;
+const mapStateToProps = state => ({
+    listID: state.listID,
+})
 
-const mapDispatchToProps = {
-	addTodo,
-	deleteTodo,
-    toggleTodoDone,
-};
+const mapDispatchToProps = dispatch => ({
+    addTodo: (listID, text)=> dispatch(addTodo({ value: text, listID })),
+    deleteTodo: id => dispatch(deleteTodo(id)),
+    toggleTodoDone: (listID, id) => dispatch(toggleTodoDone({ listID, id })),
+}); 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Todo);
+export default connect(mapStateToProps, mapDispatchToProps)(todo);
